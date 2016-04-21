@@ -2,6 +2,10 @@ package data;
 
 public class Employee {
 
+	//TODO gets sets
+	//TODO tostring
+	
+	//general
 	int id;
 	String firstname;
 	String middlename;
@@ -22,4 +26,8 @@ public class Employee {
 	String state;
 	int zipcode;
 	int version;
+	
+	Project project;
+	Assignment assignment;
+	//assignments
 }
