@@ -6,28 +6,28 @@ public class Employee {
 	// TODO tostring
 
 	// general
-	Integer id;
-	String firstname; // NOTNULL
-	String middlename;
-	String lastname; // NOTNULL
-	String gender;
-	String email;
-	Integer extention;
-	String hiredate;
+	private Integer id;
+	private String firstname; // NOTNULL
+	private String middlename;
+	private String lastname; // NOTNULL
+	private String gender;
+	private String email;
+	private Integer extention;
+	private String hiredate;
 
-	Integer hireYear;
-	Integer hireMonth;
-	Integer hireDay;
-	Integer salary;
-	Integer commission_pct;
-	Integer department_id; // NOTNULL
-	Integer job_id; // NOTNULL
-	String address;
-	String city;
-	String state;
-	Integer zipcode;
-	Integer version;
-
+	private Integer hireYear;
+	private Integer hireMonth;
+	private Integer hireDay;
+	private Integer salary;
+	private Integer commission_pct;
+	private Integer department_id; // NOTNULL
+	private Integer job_id; // NOTNULL
+	private String address;
+	private String city;
+	private String state;
+	private Integer zipcode;
+	private Integer version;
+	
 	public Employee() {
 	}
 
@@ -118,7 +118,7 @@ public class Employee {
 		return hiredate;
 	}
 
-	public void setHiredate() {
+	private void setHiredate() {
 		if (hireYear != null && hireMonth != null && hireDay != null) {
 			this.hiredate = hireYear + "-" + hireMonth + "-" + hireDay;
 		}

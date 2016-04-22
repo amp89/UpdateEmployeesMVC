@@ -7,11 +7,13 @@ public interface EmployeeDAO {
 	//get single employees
 	public Employee getEmployee(int employeeID);
 	
-	//modifying employees
-	public Results modifyEmployee(Employee employee);
+
 	
 	//new employees
 	public Results addEmployee(Employee employee);
+
+	//modify employees
+	public Results modifyEmployee(int employeeID);
 	
 	
 

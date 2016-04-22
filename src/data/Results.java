@@ -17,6 +17,10 @@ public class Results {
 		super();
 		this.errorMessage = errorMessage;
 	}
+	public Results(int rowsAffected) {
+		super();
+		this.rowsAffected = rowsAffected;
+	}
 
 	public Results(List<List<String>> rowsReturned, List<String> colsReturned) {
 		super();

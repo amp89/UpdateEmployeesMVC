@@ -7,11 +7,15 @@ public class DATATESTMETHOD {
 //		Employee emptyE = new Employee(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
 //		
 //		System.out.println(emptyE);
-		
+		EmployeeSQLDAO dao = new EmployeeSQLDAO();
 		Employee e = new Employee();
-		EmployeeQuery eq = new EmployeeQuery();
-		EmployeeSQLDAO d = new EmployeeSQLDAO();
-		d.getEmployees(eq);
+		e.setFirstname("sdfafsda");
+		e.setLastname("jlsdfkjlsdf");
+		e.setJob_id(1);
+		e.setDepartment_id(1);
+		
+		Results r = dao.addEmployee(e);
+		System.out.println("Affected Rows: " + r.getRowsAffected());
 		
 	}
 

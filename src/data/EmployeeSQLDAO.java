@@ -1,12 +1,14 @@
 package data;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class EmployeeSQLDAO implements EmployeeDAO {
@@ -23,65 +25,80 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 		} catch (ClassNotFoundException cnfe) {
 			System.out.println(cnfe);
 		}
-		//connection stuff
-		Connection connection;
-		PreparedStatement preparedStatement;
+		// connection stuff
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		ResultSetMetaData rsmd = null;
 
-		//result stuff
+		// result stuff
 		Results results = null;
-		List<List<String>> rows = null;
-		List<String> cols = null;
-		int rowsAffected = 0;
+
+		// TODO: i think this stuff is in the other place
+		// List<List<String>> rows = null;
+		// List<String> cols = null;
+		// int rowsAffected = 0;
 		String errorMessage = "";
-		
-		
+
 		try {
 			connection = DriverManager.getConnection(URL, USR, PWD);
 			preparedStatement = createPreparedStatement(employeeQuery, connection);
 			resultSet = preparedStatement.executeQuery();
 			rsmd = resultSet.getMetaData();
-			results = getResults(resultSet, rsmd, employeeQuery);
+			results = getQueryResults(resultSet, rsmd, employeeQuery);
 		} catch (SQLException sqle) {
 			System.out.println(sqle);
 			sqle.printStackTrace();
 			errorMessage = "THERE WAS AN ERROR WITH THE SQL. ERROR MESSAGE: " + sqle;
 			results = new Results(errorMessage);
+		} finally {
+			try {
+				if (connection != null) {
+
+					connection.close();
+				}
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (resultSet != null) {
+					resultSet.close();
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
-		
-		//make a result (will be passed to dao)
-		//change to results.seterror msg, if its null
 		testSysoutPrint(results);
 		return results;
 	}// getEmployees
 
-	//TODO: remove employequery object form this, it is no longer needed
-	private Results getResults(ResultSet resultSet, ResultSetMetaData rsmd, EmployeeQuery eq) throws SQLException { //caught in calling method: getEmployees();
-		
+	// TODO: remove employequery object form this, it is no longer needed
+	private Results getQueryResults(ResultSet resultSet, ResultSetMetaData rsmd, EmployeeQuery eq) throws SQLException { // caught
+
 		List<List<String>> rows = new ArrayList<>();
-		
+
 		List<String> cols = new ArrayList();
 		int rowsAffected = 0;
 		String errorMessage = "";
-		
-		int colCount = rsmd.getColumnCount(); 
+
+		int colCount = rsmd.getColumnCount();
 		for (int i = 1; i <= colCount; i++) {
 			System.out.println("reading in column " + i + ", NAME: " + rsmd.getColumnName(i));
-			cols.add(rsmd.getColumnName(i)); //TODO null pointer
+			cols.add(rsmd.getColumnName(i)); // TODO null pointer
 		}
-		
-		while(resultSet.next()){
+
+		while (resultSet.next()) {
 			List<String> row = new ArrayList<>();
-			row.add(resultSet.getString(1)); //TODO: GETSTRING FOR INT... WILL THEY WORK!!?!?
+			row.add(resultSet.getString(1)); // TODO: GETSTRING FOR INT... WILL
+												// THEY WORK!!?!?
 			row.add(resultSet.getString(2));
 			row.add(resultSet.getString(3));
 			row.add(resultSet.getString(4));
 			row.add(resultSet.getString(5));
 			row.add(resultSet.getString(6));
 			row.add(resultSet.getString(7));
-			row.add(resultSet.getString(8)); //TODO: fix date 0000-00-00//date sql exceptoin here, readin gin 00-00-0000 is a no go
+			row.add(resultSet.getString(8)); // TODO: fixed in URI
 			row.add(resultSet.getString(9));
 			row.add(resultSet.getString(10));
 			row.add(resultSet.getString(11));
@@ -93,30 +110,63 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 			row.add(resultSet.getString(17));
 			rows.add(row);
 		}
-		
-		Results r = new Results(rows,cols);
-		
+
+		Results r = new Results(rows, cols);
+
 		return r;
 	}
 
-	private PreparedStatement createPreparedStatement(EmployeeQuery eq, Connection c) throws SQLException{ //caught in calling method: getEmployees()
-		StringBuilder sql = new StringBuilder("SELECT id, firstname, middlename, lastname, gender, email, extension, hiredate, salary, commission_pct, department_id, job_id, address, city, state, zipcode, version FROM employees");
-		
-		//TODO i guess enter any critera or the search will crash
-//		sql.append(" WHERE ")
-//		
-//		if(eq.getId() != null){
-//			if(eq.getIdRange() != null){
-//				
-//			}
-//		}
-		
-		
-		PreparedStatement ps = c.prepareStatement(sql.toString());
-		
-		
+	private PreparedStatement createPreparedStatement(EmployeeQuery eq, Connection c) throws SQLException { // caught
+																											// in
+																											// calling
+		PreparedStatement ps = null;
+
+		if (eq.getId() != null) {
+			ps = createIdPreparedStatement(eq, ps, c);
+		}
+
+		if (eq.getFirstname() != null && eq.getLastname() != null) {
+			ps = createFirstnameLastnamePreparedStatement(eq, ps, c);
+		} else if (eq.getFirstname() != null) {
+			ps = createFirstnamePreparedStatement(eq, ps, c);
+		} else if (eq.getLastname() != null) {
+			ps = createLastnamePreparedStatement(eq, ps, c);
+		}
+
 		return ps;
-		
+
+	}
+
+	private PreparedStatement createIdPreparedStatement(EmployeeQuery eq, PreparedStatement ps, Connection c)
+			throws SQLException {
+		ps = c.prepareStatement("SELECT * FROM employees WHERE id = ?");
+		ps.setInt(1, eq.id);
+		return ps;
+
+	}
+
+	private PreparedStatement createFirstnameLastnamePreparedStatement(EmployeeQuery eq, PreparedStatement ps,
+			Connection c) throws SQLException {
+		ps = c.prepareStatement("SELECT * FROM employees WHERE firstname LIKE ? AND lastname LIKE ?");
+		ps.setString(1, "%" + eq.getFirstname() + "%");
+		ps.setString(2, "%" + eq.getLastname() + "%");
+		return ps;
+	}
+
+	private PreparedStatement createFirstnamePreparedStatement(EmployeeQuery eq, PreparedStatement ps, Connection c)
+			throws SQLException {
+		ps = c.prepareStatement("SELECT * FROM employees WHERE firstname LIKE ?");
+		ps.setString(1, "%" + eq.getFirstname() + "%");
+
+		return ps;
+	}
+
+	private PreparedStatement createLastnamePreparedStatement(EmployeeQuery eq, PreparedStatement ps, Connection c)
+			throws SQLException {
+		ps = c.prepareStatement("SELECT * FROM employees WHERE lastname LIKE ?");
+
+		ps.setString(1, "%" + eq.getLastname() + "%");
+		return ps;
 	}
 
 	@Override
@@ -126,23 +176,182 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 	}
 
 	@Override
-	public Results modifyEmployee(Employee employee) {
-		// TODO Auto-generated method stub
-		return null;
+	public Results modifyEmployee(int employeeID) {
+		Employee employee = getEmployee(employeeID);
+		try {
+			Class.forName(DRIVER_CLASS_NAME);
+		} catch (ClassNotFoundException cnfe) {
+			System.out.println(cnfe);
+		}
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ResultSetMetaData rsmd = null;
+		Results result;
+		try {
+			connection = DriverManager.getConnection(URL, USR, PWD);
+			preparedStatement = createAddStatement(connection, preparedStatement, employee);
+			result = getAddResults(resultSet, preparedStatement);
+		} catch (SQLException sqle) {
+			String errorMessage = "THERE WAS AN ERROR WITH THE SQL. ERROR MESSAGE: " + sqle;
+			result = new Results(errorMessage);
+
+		} finally {
+			try {
+				if (connection != null) {
+
+					connection.close();
+				}
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (resultSet != null) {
+					resultSet.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		return result;
+	}
+
+	private PreparedStatement createAddStatement(Connection c, PreparedStatement ps, Employee e) throws SQLException { // caught
+																														// in
+																														// calling
+																														// method:
+																														// add
+																														// employee
+		String dml = "INSERT INTO employees (firstname,middlename,lastname,gender,email,extension,hiredate,salary,commission_pct,department_id,job_id,address,city,state,zipcode,version) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		ps = c.prepareStatement(dml);
+
+		ps.setString(1, e.getFirstname());
+		ps.setString(2, e.getMiddlename());
+		ps.setString(3, e.getLastname());
+		ps.setString(4, e.getGender());
+		ps.setString(5, e.getEmail());
+		if (e.getExtention() != null) {
+
+			ps.setInt(6, e.getExtention());
+		} else {
+			ps.setNull(6, java.sql.Types.INTEGER);
+		}
+
+		// TODO fix date stuff
+		if (e.getHireYear() != null && e.getHireMonth() != null && e.getHireDay() != null) {
+			Calendar cal = Calendar.getInstance();
+			cal.set(e.getHireYear(), e.getHireMonth(), e.getHireDay());
+			Date date = (Date) cal.getTime();
+
+			ps.setDate(7, date);
+
+		} else {
+			ps.setNull(7, java.sql.Types.DATE);
+		}
+		if (e.getSalary() != null) {
+			ps.setInt(8, e.getSalary());
+		} else {
+			ps.setNull(8, java.sql.Types.INTEGER);
+		}
+		if (e.getCommission_pct() != null) {
+			ps.setInt(9, e.getCommission_pct());
+		} else {
+			ps.setNull(9, java.sql.Types.INTEGER);
+		}
+		if (e.getDepartment_id() != null){
+		ps.setInt(10, e.getDepartment_id());}
+		else{
+			ps.setNull(10, java.sql.Types.INTEGER);
+		}
+		if (e.getJob_id() != null){
+			ps.setInt(11, e.getJob_id());			
+		} else{
+			ps.setNull(11, java.sql.Types.INTEGER);
+		}
+		
+	
+		ps.setString(12, e.getAddress());
+		ps.setString(13, e.getCity());
+		ps.setString(14, e.getState());
+		
+		if(e.getZipcode() != null){
+			ps.setInt(15, e.getZipcode());
+			
+		}else{
+			ps.setNull(15, java.sql.Types.INTEGER);
+		}
+		
+		if(e.getVersion() != null){
+			ps.setInt(16, e.getVersion());			
+		}else{
+			ps.setNull(16, java.sql.Types.INTEGER);
+		}
+		
+
+		return ps;
+
+	}
+
+	public Results getAddResults(ResultSet rs, PreparedStatement ps) throws SQLException { // caught
+																							// in
+																							// calling
+																							// method:
+		System.out.println(ps);									// addEmploye()
+		Results results = new Results(ps.executeUpdate());
+
+		return results;
 	}
 
 	@Override
 	public Results addEmployee(Employee employee) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Class.forName(DRIVER_CLASS_NAME);
+		} catch (ClassNotFoundException cnfe) {
+			System.out.println(cnfe);
+		}
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ResultSetMetaData rsmd = null;
+		Results result;
+		try {
+			connection = DriverManager.getConnection(URL, USR, PWD);
+			preparedStatement = createAddStatement(connection, preparedStatement, employee);
+			result = getAddResults(resultSet, preparedStatement);
+		} catch (SQLException sqle) {
+			String errorMessage = "THERE WAS AN ERROR WITH THE SQL. ERROR MESSAGE: " + sqle;
+			result = new Results(errorMessage);
+
+		} finally {
+			try {
+				if (connection != null) {
+
+					connection.close();
+				}
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (resultSet != null) {
+					resultSet.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		return result;
 	}
-	
-	private void testSysoutPrint(Results r){ //TODO: BYE
+
+	private void testSysoutPrint(Results r) { // TODO: BYE
 		List<List<String>> rows = r.getRowsReturned();
-		
+
 		List<String> cols = r.getColsReturned();
-		
-		for (String c : cols) { //TODO: possible null pointer here
+
+		for (String c : cols) { // TODO: possible null pointer here
 			System.out.print(c + "\t");
 		}
 		for (List<String> row : rows) {
@@ -151,7 +360,9 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 				System.out.print(element + "\t");
 			}
 		}
-		
+
 	}
 
 }
+
+
