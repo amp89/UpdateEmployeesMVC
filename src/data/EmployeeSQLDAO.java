@@ -171,13 +171,73 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 
 	@Override
 	public Employee getEmployee(int employeeID) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Class.forName(DRIVER_CLASS_NAME);
+		} catch (ClassNotFoundException cnfe) {
+			System.out.println(cnfe);
+		}
+		Employee e = new Employee();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
+		ResultSetMetaData rsmd = null;
+		Results result;
+		try {
+			connection = DriverManager.getConnection(URL, USR, PWD);
+			preparedStatement = connection.prepareStatement("SELECT "
+					+ " id,firstname,middlename,lastname,gender,email,extention,YEAR(hiredate),MONTH(hiredate),DAY(hiredate),salary,commission_pct,department_id,job_id,address,city,state,zipcode,version "
+					+ "FROM employees WHERE id = ?");
+			preparedStatement.setInt(1, employeeID);
+			rs = preparedStatement.executeQuery();
+			e.setId(employeeID);
+			e.setFirstname(rs.getString(2));
+			e.setMiddlename(rs.getString(3));
+			e.setLastname(rs.getString(4));
+			e.setGender(rs.getString(5));
+			e.setEmail(rs.getString(6));
+			e.setExtention(rs.getInt(7));
+			e.setHireYear(rs.getInt(8));
+			e.setHireMonth(rs.getInt(9));
+			e.setHireDay(rs.getInt(10));
+			e.setSalary(rs.getInt(11));
+			e.setCommission_pct(rs.getInt(12));
+			e.setDepartment_id(rs.getInt(13));
+			e.setJob_id(rs.getInt(14));
+			e.setAddress(rs.getString(15));
+			e.setCity(rs.getString(16));
+			e.setState(rs.getString(17));
+			e.setZipcode(rs.getInt(18));
+			e.setVersion(rs.getInt(19));
+
+		} catch (SQLException sqle) {
+			String errorMessage = "THERE WAS AN ERROR WITH THE SQL. ERROR MESSAGE: " + sqle;
+			result = new Results(errorMessage);
+
+		} finally {
+			try {
+				if (connection != null) {
+
+					connection.close();
+				}
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException sqle) {
+				// TODO Auto-generated catch block
+				sqle.printStackTrace();
+			}
+
+		}
+		System.out.println("employee returned: " + e);
+		return e;
 	}
 
 	@Override
-	public Results modifyEmployee(int employeeID) {
-		Employee employee = getEmployee(employeeID);
+	public Results modifyEmployee(int employeeID, Employee updatedEmployee) {
+		// Employee employee = getEmployee(employeeID);
 		try {
 			Class.forName(DRIVER_CLASS_NAME);
 		} catch (ClassNotFoundException cnfe) {
@@ -191,7 +251,7 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 		Results result;
 		try {
 			connection = DriverManager.getConnection(URL, USR, PWD);
-			preparedStatement = createAddStatement(connection, preparedStatement, employee);
+			preparedStatement = createModifyStatement(connection, preparedStatement, employeeID, updatedEmployee);
 			result = getAddResults(resultSet, preparedStatement);
 		} catch (SQLException sqle) {
 			String errorMessage = "THERE WAS AN ERROR WITH THE SQL. ERROR MESSAGE: " + sqle;
@@ -218,11 +278,86 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 		return result;
 	}
 
+	private PreparedStatement createModifyStatement(Connection c, PreparedStatement ps, int employeeID, Employee e)
+			throws SQLException { // caught
+		// in
+		// calling
+		// method:
+		// add
+		// employee
+		String dml = "UPDATE employees SET firstname = ?,middlename = ?,lastname = ?,gender = ?,email = ?,extension = ?,hiredate = ?,salary = ?,commission_pct = ?,department_id = ?,job_id = ?,address = ?,city = ?,state = ?,zipcode = ?,version = ? WHERE id = ?";
+		ps = c.prepareStatement(dml);
+
+		ps.setString(1, e.getFirstname());
+		ps.setString(2, e.getMiddlename());
+		ps.setString(3, e.getLastname());
+		ps.setString(4, e.getGender());
+		ps.setString(5, e.getEmail());
+		if (e.getExtention() != null) {
+
+			ps.setInt(6, e.getExtention());
+		} else {
+			ps.setNull(6, java.sql.Types.INTEGER);
+		}
+
+		// TODO fix date stuff
+		if (e.getHireYear() != null && e.getHireMonth() != null && e.getHireDay() != null) {
+			Calendar cal = Calendar.getInstance();
+			cal.set(e.getHireYear(), e.getHireMonth(), e.getHireDay());
+			Date date = (Date) cal.getTime();
+
+			ps.setDate(7, date);
+
+		} else {
+			ps.setNull(7, java.sql.Types.DATE);
+		}
+		if (e.getSalary() != null) {
+			ps.setInt(8, e.getSalary());
+		} else {
+			ps.setNull(8, java.sql.Types.INTEGER);
+		}
+		if (e.getCommission_pct() != null) {
+			ps.setInt(9, e.getCommission_pct());
+		} else {
+			ps.setNull(9, java.sql.Types.INTEGER);
+		}
+		if (e.getDepartment_id() != null) {
+			ps.setInt(10, e.getDepartment_id());
+		} else {
+			ps.setNull(10, java.sql.Types.INTEGER);
+		}
+		if (e.getJob_id() != null) {
+			ps.setInt(11, e.getJob_id());
+		} else {
+			ps.setNull(11, java.sql.Types.INTEGER);
+		}
+
+		ps.setString(12, e.getAddress());
+		ps.setString(13, e.getCity());
+		ps.setString(14, e.getState());
+
+		if (e.getZipcode() != null) {
+			ps.setInt(15, e.getZipcode());
+
+		} else {
+			ps.setNull(15, java.sql.Types.INTEGER);
+		}
+
+		if (e.getVersion() != null) {
+			ps.setInt(16, e.getVersion());
+		} else {
+			ps.setNull(16, java.sql.Types.INTEGER);
+		}
+
+		// it will have an id, in the where clause.
+		ps.setInt(17, employeeID);
+
+		return ps;
+
+	}
+
 	private PreparedStatement createAddStatement(Connection c, PreparedStatement ps, Employee e) throws SQLException { // caught
 																														// in
-																														// calling
-																														// method:
-																														// add
 																														// employee
 		String dml = "INSERT INTO employees (firstname,middlename,lastname,gender,email,extension,hiredate,salary,commission_pct,department_id,job_id,address,city,state,zipcode,version) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		ps = c.prepareStatement(dml);
@@ -260,35 +395,33 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 		} else {
 			ps.setNull(9, java.sql.Types.INTEGER);
 		}
-		if (e.getDepartment_id() != null){
-		ps.setInt(10, e.getDepartment_id());}
-		else{
+		if (e.getDepartment_id() != null) {
+			ps.setInt(10, e.getDepartment_id());
+		} else {
 			ps.setNull(10, java.sql.Types.INTEGER);
 		}
-		if (e.getJob_id() != null){
-			ps.setInt(11, e.getJob_id());			
-		} else{
+		if (e.getJob_id() != null) {
+			ps.setInt(11, e.getJob_id());
+		} else {
 			ps.setNull(11, java.sql.Types.INTEGER);
 		}
-		
-	
+
 		ps.setString(12, e.getAddress());
 		ps.setString(13, e.getCity());
 		ps.setString(14, e.getState());
-		
-		if(e.getZipcode() != null){
+
+		if (e.getZipcode() != null) {
 			ps.setInt(15, e.getZipcode());
-			
-		}else{
+
+		} else {
 			ps.setNull(15, java.sql.Types.INTEGER);
 		}
-		
-		if(e.getVersion() != null){
-			ps.setInt(16, e.getVersion());			
-		}else{
+
+		if (e.getVersion() != null) {
+			ps.setInt(16, e.getVersion());
+		} else {
 			ps.setNull(16, java.sql.Types.INTEGER);
 		}
-		
 
 		return ps;
 
@@ -298,7 +431,7 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 																							// in
 																							// calling
 																							// method:
-		System.out.println(ps);									// addEmploye()
+		System.out.println(ps); // addEmploye()
 		Results results = new Results(ps.executeUpdate());
 
 		return results;
@@ -363,6 +496,49 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 
 	}
 
+	@Override
+	public Results removeEmployee(int employeeID) {
+		// Employee employee = getEmployee(employeeID);
+				try {
+					Class.forName(DRIVER_CLASS_NAME);
+				} catch (ClassNotFoundException cnfe) {
+					System.out.println(cnfe);
+				}
+
+				Connection connection = null;
+				PreparedStatement preparedStatement = null;
+				ResultSet resultSet = null;
+				ResultSetMetaData rsmd = null;
+				Results result;
+				try {
+					connection = DriverManager.getConnection(URL, USR, PWD);
+					preparedStatement = connection.prepareStatement("DELETE FROM employees WHERE id = ?");
+					preparedStatement.setInt(1, employeeID);
+					result = new Results(preparedStatement.executeUpdate());
+					
+				} catch (SQLException sqle) {
+					String errorMessage = "THERE WAS AN ERROR WITH THE SQL. ERROR MESSAGE: " + sqle;
+					result = new Results(errorMessage);
+
+				} finally {
+					try {
+						if (connection != null) {
+
+							connection.close();
+						}
+						if (preparedStatement != null) {
+							preparedStatement.close();
+						}
+						if (resultSet != null) {
+							resultSet.close();
+						}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+				return result;
+	}
+
 }
-
-
