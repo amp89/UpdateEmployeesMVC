@@ -8,6 +8,11 @@ public class DATATESTMETHOD {
 //		
 //		System.out.println(emptyE);
 		
+		Employee e = new Employee();
+		EmployeeQuery eq = new EmployeeQuery();
+		EmployeeSQLDAO d = new EmployeeSQLDAO();
+		d.getEmployees(eq);
+		
 	}
 
 }
