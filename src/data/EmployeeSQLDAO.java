@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+
 public class EmployeeSQLDAO implements EmployeeDAO {
 
 	private static final String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
@@ -18,6 +23,12 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 	private static final String USR = "student";
 	private static final String PWD = "student";
 
+	@Autowired
+	private ApplicationContext ac;
+	
+	@PostConstruct
+	public void init(){}
+	
 	@Override
 	public Results getEmployees(EmployeeQuery employeeQuery) {
 		try {

@@ -32,7 +32,9 @@ public class EmployeeQuery {
 	Integer zipcode;
 	Integer version;
 	
-	public EmployeeQuery(){}
+	public EmployeeQuery(){
+		
+	}
 	
 	public EmployeeQuery(Integer id, Integer idRange, String firstname, String middlename, String lastname,
 			String gender, String email, Integer extention, Integer hireYear, Integer hireYearRange, Integer hireMonth,
