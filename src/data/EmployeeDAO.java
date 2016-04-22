@@ -2,13 +2,13 @@ package data;
 
 public interface EmployeeDAO {
 	//searching employees
-	public Results getEmployees(String query);
+	public Results getEmployees(EmployeeQuery employeeQuery);
 	
 	//get single employees
-	public Employee getEmployee();
+	public Employee getEmployee(int employeeID);
 	
 	//modifying employees
-	public Results modifyEmployees(Employee employee);
+	public Results modifyEmployee(Employee employee);
 	
 	//new employees
 	public Results addEmployee(Employee employee);
