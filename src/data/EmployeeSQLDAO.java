@@ -355,7 +355,10 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 		}
 
 		// TODO fix date stuff
-		if (e.getHireYear() != null && e.getHireMonth() != null && e.getHireDay() != null) {
+		if ((e.getHireYear() != null && e.getHireYear() != 0)
+				&& (e.getHireMonth() != null && e.getHireMonth() != 0 ) 
+				&& (e.getHireDay() != null &&  e.getHireDay() != 0)
+				) {
 			Calendar cal = Calendar.getInstance();
 			cal.set(e.getHireYear(), e.getHireMonth(), e.getHireDay());
 			Date date = (Date) cal.getTime();

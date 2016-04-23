@@ -101,10 +101,11 @@ public class EmployeeController {
 	@RequestMapping("modify.do")
 	private ModelAndView submitModification(Employee employee){
 		ModelAndView mv = new ModelAndView();
-		System.out.println(employee);
-		dao.modifyEmployee(employee.getId(), employee);
+		System.out.println("in modify.do modding: " + employee);
+		Results results = dao.modifyEmployee(employee.getId(), employee);
 		
-		mv.addObject("employee", employee);
+		mv.addObject("results",results);
+		mv.addObject("Employee", employee);
 		mv.setViewName("modify.jsp");
 		
 		return mv;

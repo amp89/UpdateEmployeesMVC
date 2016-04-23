@@ -18,7 +18,8 @@ Add:
 </c:choose>
 
 
-<form:form action="modify.do" modelAttribute="Employee">
+<form:form action="modify.do" modelAttribute="Employee" method="GET">
+	<form:hidden path="id" value="10000008" />
 	*First Name:<form:input path="firstname" />
 	Middle Name: <form:input path="middlename" />
 	*Last Name: <form:input path="lastname" />
