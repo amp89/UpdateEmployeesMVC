@@ -233,34 +233,39 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 		Results result;
 		try {
 			connection = DriverManager.getConnection(URL, USR, PWD);
+			System.out.println("Q on id: " + employeeID);
 			preparedStatement = connection.prepareStatement("SELECT "
-					+ " id,firstname,middlename,lastname,gender,email,extention,YEAR(hiredate),MONTH(hiredate),DAY(hiredate),salary,commission_pct,department_id,job_id,address,city,state,zipcode,version "
+					+ "id,firstname,middlename,lastname,gender,email,extension,YEAR(hiredate),MONTH(hiredate),DAY(hiredate),salary,commission_pct,department_id,job_id,address,city,state,zipcode,version "
 					+ "FROM employees WHERE id = ?");
 			preparedStatement.setInt(1, employeeID);
 			rs = preparedStatement.executeQuery();
-			e.setId(employeeID);
-			e.setFirstname(rs.getString(2));
-			e.setMiddlename(rs.getString(3));
-			e.setLastname(rs.getString(4));
-			e.setGender(rs.getString(5));
-			e.setEmail(rs.getString(6));
-			e.setExtention(rs.getInt(7));
-			e.setHireYear(rs.getInt(8));
-			e.setHireMonth(rs.getInt(9));
-			e.setHireDay(rs.getInt(10));
-			e.setSalary(rs.getInt(11));
-			e.setCommission_pct(rs.getInt(12));
-			e.setDepartment_id(rs.getInt(13));
-			e.setJob_id(rs.getInt(14));
-			e.setAddress(rs.getString(15));
-			e.setCity(rs.getString(16));
-			e.setState(rs.getString(17));
-			e.setZipcode(rs.getInt(18));
-			e.setVersion(rs.getInt(19));
+			if (rs.next()) {
+				e.setId(employeeID);
+				e.setFirstname(rs.getString(2));
+				e.setMiddlename(rs.getString(3));
+				e.setLastname(rs.getString(4));
+				e.setGender(rs.getString(5));
+				e.setEmail(rs.getString(6));
+				e.setExtention(rs.getInt(7));
+				e.setHireYear(rs.getInt(8));
+				e.setHireMonth(rs.getInt(9));
+				e.setHireDay(rs.getInt(10));
+				e.setSalary(rs.getInt(11));
+				e.setCommission_pct(rs.getInt(12));
+				e.setDepartment_id(rs.getInt(13));
+				e.setJob_id(rs.getInt(14));
+				e.setAddress(rs.getString(15));
+				e.setCity(rs.getString(16));
+				e.setState(rs.getString(17));
+				e.setZipcode(rs.getInt(18));
+				e.setVersion(rs.getInt(19));
 
+			}
 		} catch (SQLException sqle) {
 			String errorMessage = "THERE WAS AN ERROR WITH THE SQL. ERROR MESSAGE: " + sqle;
 			result = new Results(errorMessage);
+			System.out.println("SQL QUERY FAILED: " + sqle);
+			sqle.printStackTrace();
 
 		} finally {
 			try {

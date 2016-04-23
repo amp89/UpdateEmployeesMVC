@@ -24,9 +24,13 @@ Search by id, first, last
 <c:forEach var="row" items="${results.rowsReturned}">
 	<br>
 	<c:forEach var="item" items="${row}">
-		${item}
+		${item} 
 	</c:forEach>
+		<form action="modifyEmployee.do">
 
+				<input type="hidden" name="idToModify" value="${row.get(0)}" />
+				<button type="submit" name="choice"  value="modify" >Modify/Delete</button>
+		</form>
 </c:forEach>
 
 
