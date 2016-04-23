@@ -25,10 +25,11 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 
 	@Autowired
 	private ApplicationContext ac;
-	
+
 	@PostConstruct
-	public void init(){}
-	
+	public void init() {
+	}
+
 	@Override
 	public Results getEmployees(EmployeeQuery employeeQuery) {
 		try {
@@ -132,18 +133,27 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 																											// calling
 		PreparedStatement ps = null;
 
-		if (eq.getId() != null) {
+		if (eq.getId() != null && eq.getFirstname() == null && eq.getLastname() == null) {
 			ps = createIdPreparedStatement(eq, ps, c);
+		} else if (eq.getId() != null && eq.getFirstname() != null && eq.getLastname() == null) {
+			ps = createIdFirstnamePreparedStatement(eq, ps, c);
+		} else if (eq.getId() != null && eq.getFirstname() == null && eq.getLastname() != null) {
+			ps = createIdLastnamePreparedStatement(eq, ps, c);
+		} else if (eq.getId() != null && eq.getFirstname() != null && eq.getLastname() != null) {
+			ps = createIdFirstnameLastnamePreparedStatement(eq, ps, c);
 		}
 
-		if (eq.getFirstname() != null && eq.getLastname() != null) {
-			ps = createFirstnameLastnamePreparedStatement(eq, ps, c);
-		} else if (eq.getFirstname() != null) {
-			ps = createFirstnamePreparedStatement(eq, ps, c);
-		} else if (eq.getLastname() != null) {
-			ps = createLastnamePreparedStatement(eq, ps, c);
-		}
+		else if (eq.getId() == null) {
 
+			if (eq.getFirstname() != null && eq.getLastname() != null) {
+				ps = createFirstnameLastnamePreparedStatement(eq, ps, c);
+			} else if (eq.getFirstname() != null && eq.getLastname() == null) {
+				ps = createFirstnamePreparedStatement(eq, ps, c);
+			} else if (eq.getFirstname() == null && eq.getLastname() != null) {
+				ps = createLastnamePreparedStatement(eq, ps, c);
+			}
+
+		}
 		return ps;
 
 	}
@@ -152,6 +162,34 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 			throws SQLException {
 		ps = c.prepareStatement("SELECT * FROM employees WHERE id = ?");
 		ps.setInt(1, eq.id);
+		return ps;
+
+	}
+
+	private PreparedStatement createIdFirstnamePreparedStatement(EmployeeQuery eq, PreparedStatement ps, Connection c)
+			throws SQLException {
+		ps = c.prepareStatement("SELECT * FROM employees WHERE id = ? AND firstname LIKE ?");
+		ps.setInt(1, eq.id);
+		ps.setString(2, "%" + eq.getFirstname() + "%");
+		return ps;
+
+	}
+
+	private PreparedStatement createIdLastnamePreparedStatement(EmployeeQuery eq, PreparedStatement ps, Connection c)
+			throws SQLException {
+		ps = c.prepareStatement("SELECT * FROM employees WHERE id = ? AND lastname LIKE ?");
+		ps.setInt(1, eq.id);
+		ps.setString(2, "%" + eq.getLastname() + "%");
+		return ps;
+
+	}
+
+	private PreparedStatement createIdFirstnameLastnamePreparedStatement(EmployeeQuery eq, PreparedStatement ps,
+			Connection c) throws SQLException {
+		ps = c.prepareStatement("SELECT * FROM employees WHERE id = ? AND firstname LIKE ? AND lastname LIKE ?");
+		ps.setInt(1, eq.id);
+		ps.setString(2, "%" + eq.getFirstname() + "%");
+		ps.setString(3, "%" + eq.getLastname() + "%");
 		return ps;
 
 	}
@@ -510,46 +548,46 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 	@Override
 	public Results removeEmployee(int employeeID) {
 		// Employee employee = getEmployee(employeeID);
-				try {
-					Class.forName(DRIVER_CLASS_NAME);
-				} catch (ClassNotFoundException cnfe) {
-					System.out.println(cnfe);
+		try {
+			Class.forName(DRIVER_CLASS_NAME);
+		} catch (ClassNotFoundException cnfe) {
+			System.out.println(cnfe);
+		}
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ResultSetMetaData rsmd = null;
+		Results result;
+		try {
+			connection = DriverManager.getConnection(URL, USR, PWD);
+			preparedStatement = connection.prepareStatement("DELETE FROM employees WHERE id = ?");
+			preparedStatement.setInt(1, employeeID);
+			result = new Results(preparedStatement.executeUpdate());
+
+		} catch (SQLException sqle) {
+			String errorMessage = "THERE WAS AN ERROR WITH THE SQL. ERROR MESSAGE: " + sqle;
+			result = new Results(errorMessage);
+
+		} finally {
+			try {
+				if (connection != null) {
+
+					connection.close();
 				}
-
-				Connection connection = null;
-				PreparedStatement preparedStatement = null;
-				ResultSet resultSet = null;
-				ResultSetMetaData rsmd = null;
-				Results result;
-				try {
-					connection = DriverManager.getConnection(URL, USR, PWD);
-					preparedStatement = connection.prepareStatement("DELETE FROM employees WHERE id = ?");
-					preparedStatement.setInt(1, employeeID);
-					result = new Results(preparedStatement.executeUpdate());
-					
-				} catch (SQLException sqle) {
-					String errorMessage = "THERE WAS AN ERROR WITH THE SQL. ERROR MESSAGE: " + sqle;
-					result = new Results(errorMessage);
-
-				} finally {
-					try {
-						if (connection != null) {
-
-							connection.close();
-						}
-						if (preparedStatement != null) {
-							preparedStatement.close();
-						}
-						if (resultSet != null) {
-							resultSet.close();
-						}
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
+				if (preparedStatement != null) {
+					preparedStatement.close();
 				}
-				return result;
+				if (resultSet != null) {
+					resultSet.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		return result;
 	}
 
 }
