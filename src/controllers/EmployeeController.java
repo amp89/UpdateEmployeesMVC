@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import data.Employee;
 import data.EmployeeDAO;
 import data.EmployeeQuery;
 import data.Results;
@@ -38,6 +39,7 @@ public class EmployeeController {
 			mv.setViewName("search.jsp");
 			break;
 		case "add":
+			mv.addObject("Employee", new Employee());
 			mv.setViewName("add.jsp");
 			break;
 
@@ -66,6 +68,21 @@ public class EmployeeController {
 		mv.addObject("EmployeeQuery", employeeQuery);
 		mv.setViewName("search.jsp");
 		return mv;
+	}
+	
+	@RequestMapping("add.do")
+	private ModelAndView searchEmployees(Employee employee){
+		ModelAndView mv = new ModelAndView();
+		employee.setHiredate();
+		Results results = dao.addEmployee(employee);
+		
+		mv.addObject("results",results);
+		mv.addObject("Employee",new Employee());
+		mv.setViewName("add.jsp");
+		
+		
+		return mv;
+		
 	}
 	
 	
