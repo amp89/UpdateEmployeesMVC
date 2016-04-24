@@ -1,5 +1,9 @@
 package data;
-
+/*
+ * Deparments class
+ * This holds a list of department objects to pass
+ * to the controller
+ */
 import java.util.List;
 
 public class Departments {

@@ -1,37 +1,30 @@
 package data;
-
-import javax.validation.constraints.Size;
-
+/*
+ * EMPLOYEE CLASS
+ */
 public class Employee {
 
-	// TODO gets sets
-	// TODO tostring
-
-	// general
-
 	private Integer id;
-	@Size(min=2)
-	private String firstname; // NOTNULL
+	private String firstname;
 	private String middlename;
-	private String lastname; // NOTNULL
+	private String lastname;
 	private String gender;
 	private String email;
 	private Integer extention;
 	private String hiredate;
-
 	private Integer hireYear;
 	private Integer hireMonth;
 	private Integer hireDay;
 	private Integer salary;
 	private Integer commission_pct;
-	private Integer department_id; // NOTNULL
-	private Integer job_id; // NOTNULL
+	private Integer department_id;
+	private Integer job_id;
 	private String address;
 	private String city;
 	private String state;
 	private Integer zipcode;
 	private Integer version;
-	
+
 	public Employee() {
 	}
 
@@ -122,7 +115,10 @@ public class Employee {
 	public String getHiredate() {
 		return hiredate;
 	}
-
+	//in the add and modify parts of this app,
+	//the hire date is set separately (year, month, day)
+	//so i changed the setHiredate method to conacatinate
+	//those values.
 	public void setHiredate() {
 		if (hireYear != null && hireMonth != null && hireDay != null) {
 			this.hiredate = "" + hireYear + "-" + hireMonth + "-" + hireDay;
@@ -224,7 +220,6 @@ public class Employee {
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
-
 
 	@Override
 	public String toString() {

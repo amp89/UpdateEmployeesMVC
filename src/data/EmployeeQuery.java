@@ -1,25 +1,34 @@
 package data;
 
+/*
+ * EMPLOYEE QUERY CLASS
+ * This is almost identical to the employee class,
+ * however i originally wanted to add ranges to the
+ * search criteria.  For example, there would be
+ * a query to show a range of employees with the
+ * IDs between 1006 and 1008.  I wasn't able to implement
+ * this because of time constraints, but the 
+ * necessary fields and getter/setter methods
+ * are still in this class.
+ */
+
 public class EmployeeQuery {
 
-	// TODO tostring
-
-	// general
-	Integer id; //exact, +/-
-	Integer idRange; //i
-	String firstname; // TODO: make sure query LIKE %%
-	String middlename;//TODO: make sure query LIKE %%
-	String lastname; //  TODO: make sure query LIKE %%
+	
+	Integer id; 
+	Integer idRange;
+	String firstname;
+	String middlename;
+	String lastname;
 	String gender;
 	String email;
 	Integer extention;
-
-	Integer hireYear; // TODO: //exact, +/-
-	Integer hireYearRange; // TODO: //exact, +/-
-	Integer hireMonth; // TODO://exact, +/-
-	Integer hireMonthRange; // TODO://exact, +/-
-	Integer hireDay; // TODO: //exact, +/-
-	Integer hireDayRange; // TODO: //exact, +/-
+	Integer hireYear;
+	Integer hireYearRange;
+	Integer hireMonth;
+	Integer hireMonthRange;
+	Integer hireDay;
+	Integer hireDayRange;
 	Integer salary;
 	Integer salaryRange;
 	Integer commission_pct;

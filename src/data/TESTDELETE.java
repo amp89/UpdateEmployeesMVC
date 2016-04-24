@@ -1,5 +1,7 @@
 package data;
-
+/*
+ * THIS IS JUST A TEST CLASS
+ */
 public class TESTDELETE {
 
 	public static void main(String[] args) {

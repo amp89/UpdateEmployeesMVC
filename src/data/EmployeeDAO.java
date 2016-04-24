@@ -17,11 +17,9 @@ public interface EmployeeDAO {
 	
 	//get departments
 	public Departments getDepartments(); 
-
+	
+	//get jobs
 	public Jobs getJobs();
-	/*
-	 * TODO: maybe make gets for the assignments and projects of each employee.
-	 * TODO: implement this interface and create queries to do the things
-	 */
+
 	
 }

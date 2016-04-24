@@ -1,5 +1,7 @@
 package data;
-
+/*
+ * JUST A TEST CLASS
+ */
 public class DATATESTMETHOD {
 
 	public static void main(String[] args) {

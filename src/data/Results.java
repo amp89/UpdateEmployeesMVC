@@ -4,7 +4,8 @@ import java.util.List;
 
 public class Results {
 /*
- * TODO: i think this method is complete
+ * This Class contains results to be returned from
+ * a query, update, insert, or modify
  */
 	private List<List<String>> rowsReturned;
 	private List<String> colsReturned;
