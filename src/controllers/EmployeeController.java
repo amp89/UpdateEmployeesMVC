@@ -17,15 +17,7 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeDAO dao;
 	
-	/*
-	 * TODO:
-	 * stuff i need to have from forms
-	 * pick an action (go to which page(
-	 * findEmployees
-	 * addEmployee
-	 * modifyEmployee
-	 * removeEmployee
-	 */
+
 	
 	@RequestMapping("menu.do")
 	private ModelAndView selectMenu(@RequestParam("choice") String choice){
@@ -76,6 +68,7 @@ public class EmployeeController {
 	private ModelAndView searchEmployees(Employee employee){
 		ModelAndView mv = new ModelAndView();
 		employee.setHiredate();
+
 		Results results = dao.addEmployee(employee);
 		
 		mv.addObject("results",results);
@@ -87,6 +80,19 @@ public class EmployeeController {
 		
 	}
 	
+	@RequestMapping("deleteEmployee.do")
+	private ModelAndView deleteEmployee(@RequestParam("idToModify") String idToModify){
+		int id = Integer.parseInt(idToModify);
+		ModelAndView mv = new ModelAndView();
+		Results results = dao.removeEmployee(id);
+		mv.addObject("EmployeeQuery",new EmployeeQuery());
+		mv.addObject("message","Employee removed.");
+		mv.setViewName("search.jsp");
+		
+		return mv;
+	}
+	
+	
 	@RequestMapping("modifyEmployee.do")
 	private ModelAndView modifyEmployee(@RequestParam("idToModify") String idToModify){
 		int id = Integer.parseInt(idToModify);
@@ -95,6 +101,8 @@ public class EmployeeController {
 		
 		System.out.println("modifyEmployee: " + employee);
 		System.out.println("id to modiffy: " + id);
+		mv.addObject("Jobs",dao.getJobs().getJobList());
+		mv.addObject("Departments",dao.getDepartments().getDepartmentList());
 		mv.addObject("Employee",employee);
 		mv.setViewName("modify.jsp");
 		return mv;

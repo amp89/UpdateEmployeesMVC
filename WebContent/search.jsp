@@ -18,7 +18,15 @@ Search by id, first, last
 </form:form>
 
 
+
 <c:choose>
+<c:when test="${!empty(message)}">
+
+	${message}
+
+
+</c:when>
+
 <c:when test="${!empty(results.rowsReturned)}">
 
 <c:forEach var="col" items="${results.colsReturned}">
@@ -34,7 +42,11 @@ Search by id, first, last
 		<form action="modifyEmployee.do">
 
 				<input type="hidden" name="idToModify" value="${row.get(0)}" />
-				<button type="submit" name="choice"  value="modify" >Modify/Delete</button>
+				<button type="submit" name="choice"  value="modify" >Modify Employee</button>
+		</form>
+				<form action="deleteEmployee.do" method="POST">
+		<input type="hidden" name="idToModify" value="${row.get(0)}">
+				<button type=submit>Delete Employee</button>
 		</form>
 </c:forEach>
 

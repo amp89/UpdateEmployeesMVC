@@ -1,4 +1,4 @@
-<%@include file="includes/header.jsp" %>
+<%@include file="includes/header.jsp"%>
 <%-- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
@@ -8,18 +8,13 @@ Add:
 
 <c:choose>
 	<c:when test="${results.rowsAffected > 0}">
-	EMPLOYEE HAS BEEN UPDATED IN THE DATEBASE.
+	EMPLOYEE HAS BEEN CHANGED IN THE DATEBASE.
+	<a href="index.jsp">back to home</a>
+
 	</c:when>
 	<c:otherwise>
-	UPDATE EMPLOYEE:
-	</c:otherwise>
-
-
-</c:choose>
-
-
-<form:form action="modify.do" modelAttribute="Employee" method="GET">
-	<form:hidden path="id" value="10000008" />
+		<form:form action="modify.do" modelAttribute="Employee" method="GET">
+			<form:hidden path="id" value="${Employee.id}" />
 	*First Name:<form:input path="firstname" />
 	Middle Name: <form:input path="middlename" />
 	*Last Name: <form:input path="lastname" />
@@ -30,16 +25,45 @@ Add:
 	Hire Day: <form:input path="hireDay" />
 	Salary: <form:input path="salary" />
 	Commission Percentage: <form:input path="commission_pct" />
-	*Department: <form:input path="department_id" />
-	*Job: <form:input path="job_id" />
+			<%-- *Department: <form:input path="department_id" /> --%>
+	*Department: 
+	 		<form:select path="department_id">
+				<option>Select One</option>
+				<c:forEach var="d" items="${Departments}">
+					<option value="${d.id}"
+						<c:if test="${Employee.department_id == d.id}">
+				selected
+				</c:if>>${d.name}</option>
+					<%-- <option value="${department.id}">${department.name}</option> --%>
+				</c:forEach>
+			</form:select>
+			<%-- *Job: <form:input path="job_id" /> --%>
+	*Job:
+		<form:select path="job_id">
+				<option>Select One</option>
+				<c:forEach var="j" items="${Jobs}">
+					<option value="${j.id}"
+						<c:if test="${Employee.job_id == j.id}">
+				selected
+				</c:if>>${j.name}</option>
+				</c:forEach>
+			</form:select>
 	Address<br>
 	Street: <form:input path="address" />
 	City: <form:input path="city" />
 	State: <form:input path="state" />
 	Zip: <form:input path="zipcode" />
-	
-	<button type=submit>Change Employee</button>
-</form:form>
+
+			<button type=submit>Change Employee</button>
+		</form:form>
 
 
-<%@include file="includes/footer.jsp" %>
+	</c:otherwise>
+
+
+</c:choose>
+
+
+
+
+<%@include file="includes/footer.jsp"%>
