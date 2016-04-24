@@ -27,6 +27,7 @@ public class EmployeeController {
 		//todo: switch to change
 		switch (choice) {
 		case "search":
+			
 			mv.addObject("EmployeeQuery",new EmployeeQuery());
 			mv.setViewName("search.jsp");
 			break;
@@ -133,8 +134,10 @@ public class EmployeeController {
 		ModelAndView mv = new ModelAndView();
 		System.out.println("in modify.do modding: " + employee);
 		Results results = dao.modifyEmployee(employee.getId(), employee);
-		
+		System.out.println("ROWS MODDED " + results.getRowsAffected());
 		mv.addObject("results",results);
+		mv.addObject("Jobs",dao.getJobs().getJobList());
+		mv.addObject("Departments",dao.getDepartments().getDepartmentList());
 		mv.addObject("Employee", employee);
 		mv.setViewName("modify.jsp");
 		

@@ -9,15 +9,18 @@ Add:
 <c:choose>
 	<c:when test="${results.rowsAffected > 0}">
 	EMPLOYEE HAS BEEN CHANGED IN THE DATEBASE.
-	<a href="index.jsp">back to home</a>
-
+	<a href="index.jsp">Back to main menu</a>
+	<form action="menu.do" method="POST">
+	<button type="submit" name=choice value="search">Seach / Modify / Delete</button>
+	
+</form>
 	</c:when>
 	<c:otherwise>
 		<form:form action="modify.do" modelAttribute="Employee" method="GET">
 			<form:hidden path="id" value="${Employee.id}" />
-	*First Name:<form:input path="firstname" />
+	*First Name:<form:input path="firstname"  required="required"/>
 	Middle Name: <form:input path="middlename" />
-	*Last Name: <form:input path="lastname" />
+	*Last Name: <form:input path="lastname" required="required"/>
 	Gender<form:input path="gender" />
 	Email<form:input path="email" />
 	Hire Year: <form:input path="hireYear" />

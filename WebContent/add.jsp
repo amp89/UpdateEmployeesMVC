@@ -9,6 +9,7 @@ Add:
 <c:choose>
 	<c:when test="${results.rowsAffected > 0}">
 	ADDED.  Add another employee, or return to the main menu.
+	<a href="index.jsp">Back to main menu</a>
 	</c:when>
 	<c:otherwise>
 	Add an employee:
@@ -19,9 +20,9 @@ Add:
 
 
 <form:form action="add.do" name="add" modelAttribute="Employee">
-	*First Name:<form:input name="firstname" path="firstname" />
+	*First Name:<form:input  path="firstname"  required="required"/>
 	Middle Name: <form:input path="middlename" />
-	*Last Name: <form:input path="lastname" />
+	*Last Name: <form:input path="lastname"  required="required"/>
 	Gender<form:input path="gender" />
 	Email<form:input path="email" />
 	Hire Year: <form:input path="hireYear" />
@@ -31,7 +32,7 @@ Add:
 	Commission Percentage: <form:input path="commission_pct" />
 	<%-- *Department: <form:input path="department_id" /> --%>
 	*Department: 
-	 		<form:select name="department" path="department_id">
+	 		<form:select path="department_id" >
 	 			<option>Select One</option>
 	 			<c:forEach var="d" items="${Departments}">
 	 				<option value="${d.id}">${d.name}</option>
@@ -40,7 +41,7 @@ Add:
 	 		</form:select>
 	<%-- *Job: <form:input path="job_id" /> --%>
 	*Job:
-		<form:select path="job_id">
+		<form:select path="job_id" >
 			<option>Select One</option>
 			<c:forEach var="j" items="${Jobs}">
 				<option value="${j.id}">${j.name}</option>

@@ -113,8 +113,22 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 			row.add(resultSet.getString(8)); // TODO: fixed in URI
 			row.add(resultSet.getString(9));
 			row.add(resultSet.getString(10));
-			row.add(resultSet.getString(11));
-			row.add(resultSet.getString(12));
+			List<Department> dl = getDepartments().getDepartmentList();
+			for (Department department : dl) {
+				if(department.getId() == resultSet.getInt(11)){
+					row.add(department.getName());
+					break;
+				}
+			}
+//			row.add(resultSet.getString(11));
+			List<Job> jl = getJobs().getJobList();
+			for (Job job : jl) {
+				if(job.getId() == resultSet.getInt(12)){
+					row.add(job.getName());
+					break;
+				}
+			}
+//			row.add(resultSet.getString(12));
 			row.add(resultSet.getString(13));
 			row.add(resultSet.getString(14));
 			row.add(resultSet.getString(15));
@@ -359,10 +373,13 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 				&& (e.getHireMonth() != null && e.getHireMonth() != 0 ) 
 				&& (e.getHireDay() != null &&  e.getHireDay() != 0)
 				) {
-			Calendar cal = Calendar.getInstance();
-			cal.set(e.getHireYear(), e.getHireMonth(), e.getHireDay());
-			Date date = (Date) cal.getTime();
+//			Calendar cal = Calendar.getInstance();
+//			cal.set(e.getHireYear(), e.getHireMonth(), e.getHireDay());
+//			Date date = (Date) cal.getTime();
 
+			@SuppressWarnings("deprecation")
+			java.sql.Date date = new java.sql.Date(e.getHireYear(),e.getHireMonth(),e.getHireDay());
+			
 			ps.setDate(7, date);
 
 		} else {
@@ -433,9 +450,8 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 
 		// TODO fix date stuff
 		if (e.getHireYear() != null && e.getHireMonth() != null && e.getHireDay() != null) {
-			Calendar cal = Calendar.getInstance();
-			cal.set(e.getHireYear(), e.getHireMonth(), e.getHireDay());
-			Date date = (Date) cal.getTime();
+			@SuppressWarnings("deprecation")
+			java.sql.Date date = new java.sql.Date(e.getHireYear(),e.getHireMonth(),e.getHireDay());
 
 			ps.setDate(7, date);
 
