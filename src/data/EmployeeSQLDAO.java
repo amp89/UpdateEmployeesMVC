@@ -597,5 +597,121 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 		}
 		return result;
 	}
+	
+	@Override
+	public Departments getDepartments(){
+		
+		/*
+		 * TODO; change to get depts
+		 */
+		try {
+			Class.forName(DRIVER_CLASS_NAME);
+		} catch (ClassNotFoundException cnfe) {
+			System.out.println(cnfe);
+		}
+		Departments departments = null;
+		List<Department> departmentList = new ArrayList<>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
+		try {
+			connection = DriverManager.getConnection(URL, USR, PWD);
+			preparedStatement = connection.prepareStatement("SELECT "
+					+ "id, name, manager_id, location_id "
+					+ "FROM departments");
+			rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				Department d = new Department(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4));
+				departmentList.add(d);
+			}
+			if (departmentList.size() > 0){
+				departments = new Departments(departmentList);
+			}
+			
+		} catch (SQLException sqle) {
+			
+			System.out.println("SQL QUERY FAILED: " + sqle);
+			sqle.printStackTrace();
+
+		} finally {
+			try {
+				if (connection != null) {
+
+					connection.close();
+				}
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException sqle) {
+				// TODO Auto-generated catch block
+				sqle.printStackTrace();
+			}
+
+		}
+		System.out.println("dept list returned");
+		return departments;
+	}
+	
+	@Override
+	public Jobs getJobs(){
+		
+		/*
+		 * TODO; change to get depts
+		 */
+		try {
+			Class.forName(DRIVER_CLASS_NAME);
+		} catch (ClassNotFoundException cnfe) {
+			System.out.println(cnfe);
+		}
+		Jobs jobs = null;
+		List<Job> jobList = new ArrayList<>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
+		try {
+			connection = DriverManager.getConnection(URL, USR, PWD);
+			preparedStatement = connection.prepareStatement("SELECT "
+					+ "id, name, minimum_salary, maximum_salary "
+					+ "FROM jobs");
+			rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				Job j = new Job(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4));
+				jobList.add(j);
+			}
+			if (jobList.size() > 0){
+				jobs = new Jobs(jobList);
+			}
+			
+		} catch (SQLException sqle) {
+			
+			System.out.println("SQL QUERY FAILED: " + sqle);
+			sqle.printStackTrace();
+
+		} finally {
+			try {
+				if (connection != null) {
+
+					connection.close();
+				}
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException sqle) {
+				// TODO Auto-generated catch block
+				sqle.printStackTrace();
+			}
+
+		}
+		System.out.println("job list returned");
+		return jobs;
+	}
+	
+
 
 }

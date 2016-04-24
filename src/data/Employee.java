@@ -55,6 +55,7 @@ public class Employee {
 		this.state = state;
 		this.zipcode = zipcode;
 		this.version = version;
+
 		setHiredate();
 	}
 
@@ -219,6 +220,7 @@ public class Employee {
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
+
 
 	@Override
 	public String toString() {

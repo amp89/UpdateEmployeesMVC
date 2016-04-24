@@ -21,6 +21,11 @@ Search by id, first, last
 <c:choose>
 <c:when test="${!empty(results.rowsReturned)}">
 
+<c:forEach var="col" items="${results.colsReturned}">
+	${col}
+</c:forEach>
+
+
 <c:forEach var="row" items="${results.rowsReturned}">
 	<br>
 	<c:forEach var="item" items="${row}">

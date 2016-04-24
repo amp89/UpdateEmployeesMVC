@@ -15,8 +15,10 @@ public interface EmployeeDAO {
 	//modify employees
 	public Results modifyEmployee(int employeeID, Employee updatedEmployee);
 	
-	
+	//get departments
+	public Departments getDepartments(); 
 
+	public Jobs getJobs();
 	/*
 	 * TODO: maybe make gets for the assignments and projects of each employee.
 	 * TODO: implement this interface and create queries to do the things

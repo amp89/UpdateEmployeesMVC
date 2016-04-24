@@ -39,6 +39,8 @@ public class EmployeeController {
 			mv.setViewName("search.jsp");
 			break;
 		case "add":
+			mv.addObject("Jobs",dao.getJobs().getJobList());
+			mv.addObject("Departments",dao.getDepartments().getDepartmentList());
 			mv.addObject("Employee", new Employee());
 			mv.setViewName("add.jsp");
 			break;

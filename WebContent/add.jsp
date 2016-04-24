@@ -29,8 +29,23 @@ Add:
 	Hire Day: <form:input path="hireDay" />
 	Salary: <form:input path="salary" />
 	Commission Percentage: <form:input path="commission_pct" />
-	*Department: <form:input path="department_id" />
-	*Job: <form:input path="job_id" />
+	<%-- *Department: <form:input path="department_id" /> --%>
+	*Department: 
+	 		<form:select path="department_id">
+	 			<option>Select One</option>
+	 			<c:forEach var="d" items="${Departments}">
+	 				<option value="${d.id}">${d.name}</option>
+	 				<%-- <option value="${department.id}">${department.name}</option> --%>
+	 			</c:forEach>
+	 		</form:select>
+	<%-- *Job: <form:input path="job_id" /> --%>
+	*Job:
+		<form:select path="job_id">
+			<option>Select One</option>
+			<c:forEach var="j" items="${Jobs}">
+				<option value="${j.id}">${j.name}</option>
+			</c:forEach>
+		</form:select>
 	Address<br>
 	Street: <form:input path="address" />
 	City: <form:input path="city" />
