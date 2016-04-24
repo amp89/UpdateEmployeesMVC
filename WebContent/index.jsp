@@ -1,21 +1,19 @@
 <%@include file="includes/header.jsp" %>
-<%-- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%> --%>
-<form action="menu.do" method="POST">
-	<button type="submit" name=choice value="search">Seach / Modify / Delete</button>
-	<button type="submit" name=choice value="add">Add</button>
-</form>
 
-<%-- <c:if test="${1==1}">
-	hi dsafdfsfdsa 
-	fdsa
-	fdsa
-	fdsa
-	fdsa
-	fdsa
-	fasd
-</c:if> --%>
+
+<header>
+    <div class="header-content">
+        <div class="header-content-inner">
+            <h1>Human Resources Database</h1>
+			<br>
+            <form action="menu.do" method="POST">
+            <button type="submit" name=choice value="search" class="btn btn-primary btn-xl page-scroll brown-button">Search / Modify / Remove</button>
+            <button type="submit" name=choice value="add" class="btn btn-primary btn-xl page-scroll brown-button">Add New Employee</button>
+</form>
+        </div>
+    </div>
+</header>
+
+
 
 <%@include file="includes/footer.jsp" %>

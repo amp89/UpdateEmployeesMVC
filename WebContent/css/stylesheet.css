@@ -1,0 +1,79 @@
+body{
+  background-color: #d8995a;
+}
+
+a{
+	text-decoration:none;
+	color:white;
+	
+}
+a:hover{
+	text-decoration:none;
+	color:black;
+	background-color:brown;
+
+}
+
+
+header{
+
+  background-image: url(../img/tob.jpg);
+}
+
+
+.header-content-inner{
+  color:#d8995a;
+
+  text-shadow: 3px 3px 9px black;
+
+}
+
+.brown-button{
+    margin-top: 1%;
+    background-color: #d8995a;
+    color: rgb(20,20,20);
+    margin-top:1%;
+}
+
+.brown-button:hover{
+	margin-top:1%;
+    background-color: #663300;
+    color: rgb(220,220,220);
+}
+
+
+.bg-primary{
+  background-color:#bd8647;
+  color:black;
+}
+
+.text-faded{
+  color:#663300;
+}
+
+.custom-submit{
+	margin-top:1%;
+  background-color: #663300;
+  color: rgb(220,220,220);
+}
+
+.attribute{
+  font-weight: bold;
+}
+
+.mod-delete{
+  margin:2%;
+  background-color: #663300;
+  color: rgb(220,220,220);
+}
+.mod-delete:hover{
+
+}
+
+.result-border{
+	border-bottom:1px solid #663300;
+	padding:1%;
+}
+
+
+

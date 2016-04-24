@@ -506,7 +506,7 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 																							// method:
 		System.out.println(ps); // addEmploye()
 		Results results = new Results(ps.executeUpdate());
-
+		System.out.println(results.getRowsAffected());
 		return results;
 	}
 

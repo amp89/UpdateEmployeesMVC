@@ -4,33 +4,76 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%> --%>
 
-Add:
-
+    <section class="bg-primary" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                <h2 class="section-heading">Modify Employees</h2>
+                <hr class="light">
 <c:choose>
 	<c:when test="${results.rowsAffected > 0}">
 	EMPLOYEE HAS BEEN CHANGED IN THE DATEBASE.
 	<a href="index.jsp">Back to main menu</a>
 	<form action="menu.do" method="POST">
-	<button type="submit" name=choice value="search">Seach / Modify / Delete</button>
+	<button class="btn btn-default btn-xl custom-submit" type="submit" name=choice value="search">Search Again</button>
 	
 </form>
 	</c:when>
 	<c:otherwise>
 		<form:form action="modify.do" modelAttribute="Employee" method="GET">
-			<form:hidden path="id" value="${Employee.id}" />
-	*First Name:<form:input path="firstname"  required="required"/>
-	Middle Name: <form:input path="middlename" />
-	*Last Name: <form:input path="lastname" required="required"/>
-	Gender<form:input path="gender" />
-	Email<form:input path="email" />
-	Hire Year: <form:input path="hireYear" />
-	Hire Month: <form:input path="hireMonth" />
-	Hire Day: <form:input path="hireDay" />
-	Salary: <form:input path="salary" />
-	Commission Percentage: <form:input path="commission_pct" />
-			<%-- *Department: <form:input path="department_id" /> --%>
-	*Department: 
-	 		<form:select path="department_id">
+*=required
+	<table>
+	<tr>
+		<td>*First Name:</td>
+		<td><form:input  path="firstname"  required="required"/></td>
+		<td>Middle Name:</td>
+		<td><form:input path="middlename" /></td>
+	</tr>
+
+	
+	<tr>
+		<td>*Last Name:</td>
+		<td><form:input path="lastname"  required="required"/></td>
+		<td>Gender:</td>
+		<td><form:input path="gender" /></td>
+	</tr>
+	
+
+	
+	<tr>
+		<td>Email:</td>
+		<td><form:input path="email" /></td>
+		<td>Extention:</td>
+		<td><form:input path="extention" /></td>
+	</tr>
+	
+
+	<tr>
+		<td>Hire Year:</td>
+		<td><form:input path="hireYear" /></td>
+		<td>Hire Month:</td>
+		<td><form:input path="hireMonth" /></td>
+	</tr>
+	
+
+	
+	<tr>
+		<td>Hire Day:</td>
+		<td><form:input path="hireDay" /></td>
+		<td>Salary:</td>
+		<td><form:input path="salary" /></td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td></td>
+		<td><form:input path="commission_pct" /></td>
+	</tr>
+	
+	<tr>
+		<td>*Department</td>
+		<td><form:select path="department_id">
 				<option>Select One</option>
 				<c:forEach var="d" items="${Departments}">
 					<option value="${d.id}"
@@ -39,10 +82,9 @@ Add:
 				</c:if>>${d.name}</option>
 					<%-- <option value="${department.id}">${department.name}</option> --%>
 				</c:forEach>
-			</form:select>
-			<%-- *Job: <form:input path="job_id" /> --%>
-	*Job:
-		<form:select path="job_id">
+			</form:select></td>
+		<td>*Job</td>
+		<td><form:select path="job_id">
 				<option>Select One</option>
 				<c:forEach var="j" items="${Jobs}">
 					<option value="${j.id}"
@@ -50,14 +92,34 @@ Add:
 				selected
 				</c:if>>${j.name}</option>
 				</c:forEach>
-			</form:select>
-	Address<br>
-	Street: <form:input path="address" />
-	City: <form:input path="city" />
-	State: <form:input path="state" />
-	Zip: <form:input path="zipcode" />
+			</form:select></td>
+	</tr>
+	
 
-			<button type=submit>Change Employee</button>
+	<tr>
+		<td>Street:</td>
+		<td><form:input path="address" /></td>
+		<td>City:</td>
+		<td><form:input path="city" /></td>
+	</tr>
+	
+
+	
+	<tr>
+		<td>State:</td>
+		<td><form:input path="state" /></td>
+		<td>Zip Code:</td>
+		<td><form:input path="zipcode" /></td>
+	</tr>
+	
+	
+	
+
+	
+	
+	</table>
+	<form:hidden path="id" value="${Employee.id}" />
+			<button class="btn btn-default btn-xl custom-submit" type=submit>Change Employee</button>
 		</form:form>
 
 
@@ -65,7 +127,10 @@ Add:
 
 
 </c:choose>
-
+                </div>
+            </div>
+        </div>
+    </section>
 
 
 
