@@ -1,12 +1,16 @@
 package data;
 
+import javax.validation.constraints.Size;
+
 public class Employee {
 
 	// TODO gets sets
 	// TODO tostring
 
 	// general
+
 	private Integer id;
+	@Size(min=2)
 	private String firstname; // NOTNULL
 	private String middlename;
 	private String lastname; // NOTNULL

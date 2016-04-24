@@ -18,8 +18,8 @@ Add:
 </c:choose>
 
 
-<form:form action="add.do" modelAttribute="Employee">
-	*First Name:<form:input path="firstname" />
+<form:form action="add.do" name="add" modelAttribute="Employee">
+	*First Name:<form:input name="firstname" path="firstname" />
 	Middle Name: <form:input path="middlename" />
 	*Last Name: <form:input path="lastname" />
 	Gender<form:input path="gender" />
@@ -31,7 +31,7 @@ Add:
 	Commission Percentage: <form:input path="commission_pct" />
 	<%-- *Department: <form:input path="department_id" /> --%>
 	*Department: 
-	 		<form:select path="department_id">
+	 		<form:select name="department" path="department_id">
 	 			<option>Select One</option>
 	 			<c:forEach var="d" items="${Departments}">
 	 				<option value="${d.id}">${d.name}</option>

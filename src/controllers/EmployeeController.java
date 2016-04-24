@@ -67,24 +67,44 @@ public class EmployeeController {
 	@RequestMapping("add.do")
 	private ModelAndView searchEmployees(Employee employee){
 		ModelAndView mv = new ModelAndView();
+			
 		employee.setHiredate();
 
 		Results results = dao.addEmployee(employee);
 		
 		mv.addObject("results",results);
+		mv.addObject("Jobs",dao.getJobs().getJobList());
+		mv.addObject("Departments",dao.getDepartments().getDepartmentList());
 		mv.addObject("Employee",new Employee());
 		mv.setViewName("add.jsp");
 		
 		
 		return mv;
-		
 	}
+	
+//	@RequestMapping("add.do")
+//	private ModelAndView searchEmployees(Employee employee){
+//		ModelAndView mv = new ModelAndView();
+//		employee.setHiredate();
+//		
+//		Results results = dao.addEmployee(employee);
+//		
+//		mv.addObject("results",results);
+//		mv.addObject("Employee",new Employee());
+//		mv.setViewName("add.jsp");
+//		
+//		
+//		return mv;
+//	}
+//	
+
 	
 	@RequestMapping("deleteEmployee.do")
 	private ModelAndView deleteEmployee(@RequestParam("idToModify") String idToModify){
 		int id = Integer.parseInt(idToModify);
 		ModelAndView mv = new ModelAndView();
-		Results results = dao.removeEmployee(id);
+//		Results results = dao.removeEmployee(id);
+		dao.removeEmployee(id);
 		mv.addObject("EmployeeQuery",new EmployeeQuery());
 		mv.addObject("message","Employee removed.");
 		mv.setViewName("search.jsp");
