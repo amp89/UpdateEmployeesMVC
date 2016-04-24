@@ -1,14 +1,12 @@
 package data;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -262,8 +260,11 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 				e.setEmail(rs.getString(6));
 				e.setExtention(rs.getInt(7));
 				e.setHireYear(rs.getInt(8));
+				System.out.println("yr" + rs.getInt(8));
 				e.setHireMonth(rs.getInt(9));
+				System.out.println("mo" + rs.getInt(9));
 				e.setHireDay(rs.getInt(10));
+				System.out.println("da" + rs.getInt(10));
 				e.setSalary(rs.getInt(11));
 				e.setCommission_pct(rs.getInt(12));
 				e.setDepartment_id(rs.getInt(13));
@@ -273,7 +274,7 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 				e.setState(rs.getString(17));
 				e.setZipcode(rs.getInt(18));
 				e.setVersion(rs.getInt(19));
-
+				e.setHiredate();
 			}
 		} catch (SQLException sqle) {
 			String errorMessage = "THERE WAS AN ERROR WITH THE SQL. ERROR MESSAGE: " + sqle;
@@ -369,18 +370,13 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 		}
 
 		// TODO fix date stuff
-		if ((e.getHireYear() != null && e.getHireYear() != 0)
-				&& (e.getHireMonth() != null && e.getHireMonth() != 0 ) 
-				&& (e.getHireDay() != null &&  e.getHireDay() != 0)
-				) {
-//			Calendar cal = Calendar.getInstance();
-//			cal.set(e.getHireYear(), e.getHireMonth(), e.getHireDay());
-//			Date date = (Date) cal.getTime();
-
-			@SuppressWarnings("deprecation")
-			java.sql.Date date = new java.sql.Date(e.getHireYear(),e.getHireMonth(),e.getHireDay());
-			
-			ps.setDate(7, date);
+		if (e.getHireYear() != null && e.getHireMonth() != null && e.getHireDay() != null) {
+//			@SuppressWarnings("deprecation")
+//			java.sql.Timestamp ts = new java.sql.Timestamp()
+//			java.sql.Date date = new java.sql.Date(e.getHireYear(),e.getHireMonth(),e.getHireDay());
+//			
+//			System.out.println(date);
+			ps.setString(7, ("" + e.getHireYear() + "-" + e.getHireMonth() + "-" + e.getHireDay()));
 
 		} else {
 			ps.setNull(7, java.sql.Types.DATE);
@@ -450,10 +446,12 @@ public class EmployeeSQLDAO implements EmployeeDAO {
 
 		// TODO fix date stuff
 		if (e.getHireYear() != null && e.getHireMonth() != null && e.getHireDay() != null) {
-			@SuppressWarnings("deprecation")
-			java.sql.Date date = new java.sql.Date(e.getHireYear(),e.getHireMonth(),e.getHireDay());
-
-			ps.setDate(7, date);
+//			@SuppressWarnings("deprecation")
+//			java.sql.Timestamp ts = new java.sql.Timestamp()
+//			java.sql.Date date = new java.sql.Date(e.getHireYear(),e.getHireMonth(),e.getHireDay());
+//			
+//			System.out.println(date);
+			ps.setString(7, ("" + e.getHireYear() + "-" + e.getHireMonth() + "-" + e.getHireDay()));
 
 		} else {
 			ps.setNull(7, java.sql.Types.DATE);

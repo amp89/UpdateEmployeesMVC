@@ -9,7 +9,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 col-lg-offset-2 text-center">
-				<h2 class="section-heading">We've got what you need!</h2>
+				<h2 class="section-heading">Employee Search</h2>
 				<hr class="light">
 				<p class="text-faded">
 
@@ -105,7 +105,9 @@
 								<span class="attribute">Zip</span> ${row.get(15)}
 							</div>
 
-
+							<div class="col-xs-12 col-sm-6 col-md-4">
+								<span class="attribute">Hired: </span> ${row.get(7)}
+							</div>
 
 
 						</div>

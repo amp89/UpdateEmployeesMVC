@@ -10,7 +10,7 @@
 			</div>
 			<div class="row">
 				<h2 text-center>More Information</h2>
-				<p>For more information on this project, or to see my other projects, visit <a target="_blank" href="www.alexmpeterson.com/projects.php">alexmpeterson.com</a></p>
+				<p>For more information on this project, or to see my other projects, visit <a target="_blank" href="http://www.alexmpeterson.com/projects.php">alexmpeterson.com</a></p>
 				<ul>Grade
 					<li>PLSDJFLDSJ</li>
 				</ul>

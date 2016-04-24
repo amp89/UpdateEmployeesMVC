@@ -125,7 +125,7 @@ public class Employee {
 
 	public void setHiredate() {
 		if (hireYear != null && hireMonth != null && hireDay != null) {
-			this.hiredate = hireYear + "-" + hireMonth + "-" + hireDay;
+			this.hiredate = "" + hireYear + "-" + hireMonth + "-" + hireDay;
 		}
 	}
 
