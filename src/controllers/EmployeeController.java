@@ -20,22 +20,27 @@ public class EmployeeController {
 	private EmployeeDAO dao;
 	
 
-	
+	//make a menu choice
 	@RequestMapping("menu.do")
 	private ModelAndView selectMenu(@RequestParam("choice") String choice){
 		ModelAndView mv = new ModelAndView();
 		System.out.println("choice: " + choice);
 		
-		//todo: switch to change
+		//do the corresponding action based on which
+		//button the suer checked
 		switch (choice) {
 		case "search":
-			
+			//add a query object to the model view, and go
+			//to the serach page
 			mv.addObject("EmployeeQuery",new EmployeeQuery());
 			mv.setViewName("search.jsp");
 			break;
 		case "add":
-			mv.addObject("Jobs",dao.getJobs().getJobList());
-			mv.addObject("Departments",dao.getDepartments().getDepartmentList());
+			//add jobs and departments objects, so the
+			//jsp can get their Lists, and iterate over them
+			//also pass a new employee object to modify.
+			mv.addObject("Jobs",dao.getJobs());
+			mv.addObject("Departments",dao.getDepartments());
 			mv.addObject("Employee", new Employee());
 			mv.setViewName("add.jsp");
 			break;
@@ -51,33 +56,33 @@ public class EmployeeController {
 	@RequestMapping("search.do")
 	private ModelAndView searchEmployees(EmployeeQuery employeeQuery){
 		ModelAndView mv = new ModelAndView();
-		
-		//TODO DEBUGS:
-			System.out.println("search.do ... ");
-			System.out.println(employeeQuery.getId());
-			System.out.println(employeeQuery.getFirstname());
-			System.out.println(employeeQuery.getLastname());
+		//get the results of the employee query
 		Results results = dao.getEmployees(employeeQuery);
 		
-			
-		mv.addObject(results);	
+		//add the results to the model view	
 		mv.addObject("results",results);
+		//add the query to the model view
 		mv.addObject("EmployeeQuery", employeeQuery);
 		mv.setViewName("search.jsp");
 		return mv;
 	}
 	
+	//add an employee
 	@RequestMapping("add.do")
 	private ModelAndView searchEmployees(Employee employee){
 		ModelAndView mv = new ModelAndView();
-			
+		//set the hire date (the year, month, and date
+		//is entered separately, and the setHireDate()
+		//method concatenates them and adds them to the
+		//hiredate field.
 		employee.setHiredate();
 
 		Results results = dao.addEmployee(employee);
-		
+		//and results, jobs, departments, and a new employee to the
+		//add form, and go to add.jsp
 		mv.addObject("results",results);
-		mv.addObject("Jobs",dao.getJobs().getJobList());
-		mv.addObject("Departments",dao.getDepartments().getDepartmentList());
+		mv.addObject("Jobs",dao.getJobs());
+		mv.addObject("Departments",dao.getDepartments());
 		mv.addObject("Employee",new Employee());
 		mv.setViewName("add.jsp");
 		
@@ -85,29 +90,17 @@ public class EmployeeController {
 		return mv;
 	}
 	
-//	@RequestMapping("add.do")
-//	private ModelAndView searchEmployees(Employee employee){
-//		ModelAndView mv = new ModelAndView();
-//		employee.setHiredate();
-//		
-//		Results results = dao.addEmployee(employee);
-//		
-//		mv.addObject("results",results);
-//		mv.addObject("Employee",new Employee());
-//		mv.setViewName("add.jsp");
-//		
-//		
-//		return mv;
-//	}
-//	
-
-	
+	//remove an employee
 	@RequestMapping("deleteEmployee.do")
 	private ModelAndView deleteEmployee(@RequestParam("idToModify") String idToModify){
+		//change the string ID to an integer id (the id comes
+		//from the results String array list in the search results,
+		//so it must be converted back to an integer
 		int id = Integer.parseInt(idToModify);
 		ModelAndView mv = new ModelAndView();
-//		Results results = dao.removeEmployee(id);
+		//remove the employee
 		dao.removeEmployee(id);
+		//return to the search 
 		mv.addObject("EmployeeQuery",new EmployeeQuery());
 		mv.addObject("message","Employee removed.");
 		mv.setViewName("search.jsp");
@@ -115,31 +108,36 @@ public class EmployeeController {
 		return mv;
 	}
 	
-	
+	//change an employee
 	@RequestMapping("modifyEmployee.do")
 	private ModelAndView modifyEmployee(@RequestParam("idToModify") String idToModify){
 		int id = Integer.parseInt(idToModify);
 		ModelAndView mv = new ModelAndView();
+		//get an employee to change by the id.
 		Employee employee = dao.getEmployee(id);
 		
-		System.out.println("modifyEmployee: " + employee);
-		System.out.println("id to modiffy: " + id);
-		mv.addObject("Jobs",dao.getJobs().getJobList());
-		mv.addObject("Departments",dao.getDepartments().getDepartmentList());
+		//add jobs and departments for their lists
+		//to populate the dropdowns
+		mv.addObject("Jobs",dao.getJobs());
+		mv.addObject("Departments",dao.getDepartments());
+		//add an employee and go to the modify page
 		mv.addObject("Employee",employee);
 		mv.setViewName("modify.jsp");
 		return mv;
 	}
 	
+	//perform the modification
 	@RequestMapping("modify.do")
 	private ModelAndView submitModification(Employee employee){
 		ModelAndView mv = new ModelAndView();
-		System.out.println("in modify.do modding: " + employee);
+		
+		//modify the employee and save the result (modifyEmployee returns
+		//a result)
 		Results results = dao.modifyEmployee(employee.getId(), employee);
-		System.out.println("ROWS MODDED " + results.getRowsAffected());
+		//and the relevenat objects, and return the the modify page.
 		mv.addObject("results",results);
-		mv.addObject("Jobs",dao.getJobs().getJobList());
-		mv.addObject("Departments",dao.getDepartments().getDepartmentList());
+		mv.addObject("Jobs",dao.getJobs());
+		mv.addObject("Departments",dao.getDepartments());
 		mv.addObject("Employee", employee);
 		mv.setViewName("modify.jsp");
 		

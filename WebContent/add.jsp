@@ -79,7 +79,7 @@
 		<td>*Department</td>
 		<td><form:select path="department_id" >
 	 			<option>Select One</option>
-	 			<c:forEach var="d" items="${Departments}">
+	 			<c:forEach var="d" items="${Departments.departmentList}">
 	 				<option value="${d.id}">${d.name}</option>
 	 				<%-- <option value="${department.id}">${department.name}</option> --%>
 	 			</c:forEach>
@@ -87,7 +87,7 @@
 		<td>*Job</td>
 		<td><form:select path="job_id" >
 			<option>Select One</option>
-			<c:forEach var="j" items="${Jobs}">
+			<c:forEach var="j" items="${Jobs.jobList}">
 				<option value="${j.id}">${j.name}</option>
 			</c:forEach>
 		</form:select></td>
@@ -105,7 +105,7 @@
 	
 	<tr>
 		<td>State:</td>
-		<td><form:input path="state" /></td>
+		<td><form:input path="state" placeholder="Abbr. ONLY. ex: CO"/></td>
 		<td>Zip Code:</td>
 		<td><form:input path="zipcode" /></td>
 	</tr>

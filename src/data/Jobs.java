@@ -3,7 +3,7 @@ package data;
 import java.util.List;
 
 public class Jobs {
-	List<Job> jobList;
+	private List<Job> jobList;
 
 	
 	

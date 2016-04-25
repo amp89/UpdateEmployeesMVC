@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Departments {
 	
-	List<Department> departmentList;
+	private List<Department> departmentList;
 
 	public Departments() {
 		super();
