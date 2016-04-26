@@ -27,6 +27,7 @@
 				    The picture on the index.jsp page is Toby Flenderson, an HR employee form the
 				     TV show The Office.  I attempted to design the site around the brownish
 				      colors of his suit.</p>
+				      <p>UPDATE: Back end validation was added</p>
 			</div>
 			
 			

@@ -57,8 +57,17 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping("search.do")
-	private ModelAndView searchEmployees(EmployeeQuery employeeQuery){
+	private ModelAndView searchEmployees(@Valid EmployeeQuery employeeQuery, Errors errors){
 		ModelAndView mv = new ModelAndView();
+		
+		
+		if(errors.getErrorCount() != 0){
+			mv.addObject("EmployeeQuery", employeeQuery);
+			System.out.println(errors);
+			mv.setViewName("search.jsp");
+			return mv;
+			
+		}
 		//get the results of the employee query
 		Results results = dao.getEmployees(employeeQuery);
 		
@@ -72,7 +81,7 @@ public class EmployeeController {
 	
 	//add an employee
 	@RequestMapping("add.do")
-	private ModelAndView searchEmployees(@Valid Employee employee, Errors errors){
+	private ModelAndView addEmployees(@Valid Employee employee, Errors errors){
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("Jobs",dao.getJobs());
 		mv.addObject("Departments",dao.getDepartments());

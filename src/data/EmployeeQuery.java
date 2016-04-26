@@ -1,5 +1,7 @@
 package data;
 
+import org.hibernate.validator.constraints.Range;
+
 /*
  * EMPLOYEE QUERY CLASS
  * This is almost identical to the employee class,
@@ -14,7 +16,7 @@ package data;
 
 public class EmployeeQuery {
 
-	
+	@Range(max=9999999)
 	Integer id; 
 	Integer idRange;
 	String firstname;
