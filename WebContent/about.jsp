@@ -32,7 +32,7 @@
 			
 			<div class="row">
 				<h2 text-center>Per Jamie's Instructions: Grading - How I think I did</h2>
-				<p>For more detailed information on this project, or to see my other projects, visit <a target="_blank" href="http://www.alexmpeterson.com/projects.php">alexmpeterson.com/HRDatabaseProject.php</a></p>
+				
 				<ul>
 					<li>HTML/JSP<ul>
 					<li><span class="attribute">3 </span>- Reason: For the most part, my data is layout is appropriate.  However, on phones, the tables have an odd view.</li>

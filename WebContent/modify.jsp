@@ -67,7 +67,7 @@
 	
 	
 	<tr>
-		<td></td>
+		<td>Commission %:</td>
 		<td><form:input path="commission_pct" /></td>
 	</tr>
 	
