@@ -1,7 +1,10 @@
 package controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -69,8 +72,18 @@ public class EmployeeController {
 	
 	//add an employee
 	@RequestMapping("add.do")
-	private ModelAndView searchEmployees(Employee employee){
+	private ModelAndView searchEmployees(@Valid Employee employee, Errors errors){
 		ModelAndView mv = new ModelAndView();
+		mv.addObject("Jobs",dao.getJobs());
+		mv.addObject("Departments",dao.getDepartments());
+
+		if (errors.getErrorCount() != 0){
+			mv.addObject("Employee", employee);
+			mv.setViewName("add.jsp");
+			System.out.println(errors);
+			mv.addObject("invalidData","Invalid Parameters. Please check all parameters and try again.");
+			return mv;
+			}
 		//set the hire date (the year, month, and date
 		//is entered separately, and the setHireDate()
 		//method concatenates them and adds them to the
@@ -81,8 +94,6 @@ public class EmployeeController {
 		//and results, jobs, departments, and a new employee to the
 		//add form, and go to add.jsp
 		mv.addObject("results",results);
-		mv.addObject("Jobs",dao.getJobs());
-		mv.addObject("Departments",dao.getDepartments());
 		mv.addObject("Employee",new Employee());
 		mv.setViewName("add.jsp");
 		
@@ -128,16 +139,24 @@ public class EmployeeController {
 	
 	//perform the modification
 	@RequestMapping("modify.do")
-	private ModelAndView submitModification(Employee employee){
+	private ModelAndView submitModification(@Valid Employee employee, Errors errors){
 		ModelAndView mv = new ModelAndView();
+		mv.addObject("Jobs",dao.getJobs());
+		mv.addObject("Departments",dao.getDepartments());
 		
+		
+		if (errors.getErrorCount() != 0){
+			mv.addObject("Employee", employee);
+			mv.setViewName("modify.jsp");
+			System.out.println(errors);
+			mv.addObject("invalidData","Invalid Parameters. Please check all parameters and try again.");
+			return mv;
+			}
 		//modify the employee and save the result (modifyEmployee returns
 		//a result)
 		Results results = dao.modifyEmployee(employee.getId(), employee);
 		//and the relevenat objects, and return the the modify page.
 		mv.addObject("results",results);
-		mv.addObject("Jobs",dao.getJobs());
-		mv.addObject("Departments",dao.getDepartments());
 		mv.addObject("Employee", employee);
 		mv.setViewName("modify.jsp");
 		

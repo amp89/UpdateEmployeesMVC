@@ -1,27 +1,52 @@
 package data;
+
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Range;
+
 /*
  * EMPLOYEE CLASS
  */
 public class Employee {
 
+	
 	private Integer id;
+	@Size(min=2, max=50, message="2-50 Characterss")
 	private String firstname;
+	@Size(max=50, message="Enter Valid Data")
 	private String middlename;
+	@Size(min=1, max=50, message="Enter Valid Data")
 	private String lastname;
+	@Size(max=1, message="Enter Valid Data")
 	private String gender;
+	@Size(max=100, message="Enter Valid Data")
 	private String email;
+	@Range(max=9999, message="Enter Valid Data")
 	private Integer extention;
 	private String hiredate;
+	@Range(max=9999, message="Enter Valid Data")
 	private Integer hireYear;
+	@Range(min=0, max=12, message="Enter Valid Data")
 	private Integer hireMonth;
+	@Range(min=0, max=31, message="Enter Valid Data")
 	private Integer hireDay;
+	@Range(min=0, max=999999999, message="Enter Valid Data")
 	private Integer salary;
+	@Range(min=0, max=100, message="Enter Valid Data")
 	private Integer commission_pct;
+	@Range(min=1, message="Enter Valid Data")
 	private Integer department_id;
+	@Range(min=1, message="Enter Valid Data")
 	private Integer job_id;
+
+	@Size(max=100, message="Enter Valid Data")
 	private String address;
+
+	@Size(max=100, message="Enter Valid Data")
 	private String city;
+	@Size(max=2)
 	private String state;
+	@Range(min=0, max=99999, message="Enter Valid Data")	
 	private Integer zipcode;
 	private Integer version;
 

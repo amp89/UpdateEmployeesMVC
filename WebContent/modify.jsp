@@ -21,7 +21,10 @@
 	</c:when>
 	<c:otherwise>
 		<form:form action="modify.do" modelAttribute="Employee" method="GET">
-*=required
+*=required.
+<c:if test="${!empty(invalidData)}">
+	${invalidData}
+</c:if>
 	<table>
 	<tr>
 		<td>*First Name:</td>
@@ -35,7 +38,7 @@
 		<td>*Last Name:</td>
 		<td><form:input path="lastname"  required="required"/></td>
 		<td>Gender:</td>
-		<td><form:input path="gender" /></td>
+		<td><form:input path="gender" placeholder="1 CHARACTER ONLY" /></td>
 	</tr>
 	
 
@@ -44,31 +47,31 @@
 		<td>Email:</td>
 		<td><form:input path="email" /></td>
 		<td>Extention:</td>
-		<td><form:input path="extention" /></td>
+		<td><form:input path="extention" placeholder="4 DIGITS ONLY" /></td>
 	</tr>
 	
 
 	<tr>
 		<td>Hire Year:</td>
-		<td><form:input path="hireYear" /></td>
+		<td><form:input path="hireYear" placeholder="4 DIGITS ONLY" /></td>
 		<td>Hire Month:</td>
-		<td><form:input path="hireMonth" /></td>
+		<td><form:input path="hireMonth"  placeholder="2 DIGITS MAX" /></td>
 	</tr>
 	
 
 	
 	<tr>
 		<td>Hire Day:</td>
-		<td><form:input path="hireDay" /></td>
+		<td><form:input path="hireDay"  placeholder="2 DIGITS MAX" /></td>
 		<td>Salary:</td>
-		<td><form:input path="salary" /></td>
+		<td><form:input path="salary" placeholder="7 DIGITS MAX" /></td>
 	</tr>
 	
 	
 	
 	<tr>
 		<td>Commission %:</td>
-		<td><form:input path="commission_pct" /></td>
+		<td><form:input path="commission_pct"  placeholder="WHOLE # UP TO 100" /></td>
 	</tr>
 	
 	<tr>
@@ -107,9 +110,9 @@
 	
 	<tr>
 		<td>State:</td>
-		<td><form:input path="state"   placeholder="Abbr. ONLY. ex: CO"/></td>
+		<td><form:input path="state"  placeholder="ABBR. ONLY. (ex: CO)"/></td>
 		<td>Zip Code:</td>
-		<td><form:input path="zipcode" /></td>
+		<td><form:input path="zipcode" placeholder="5 DIGITS ONLY" /></td>
 	</tr>
 	
 	
